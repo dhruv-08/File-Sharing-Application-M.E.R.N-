@@ -1,0 +1,12 @@
+
+input, label {
+    display: block;
+  }
+  
+  input[type=file]::-webkit-file-upload-button {
+    border: 1px solid grey;
+    background: rgb(148, 35, 35);
+    border-radius: 15px;
+    color:white;
+    width: 200px;
+  }

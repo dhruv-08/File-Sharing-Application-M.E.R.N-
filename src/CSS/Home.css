@@ -1,0 +1,13 @@
+.Left{
+    background-color: #f7f9fa;
+    height: 100vh;
+}
+.logo{
+    display: inline;
+    padding-left: 8%;
+    padding-top: 50%;
+}
+.img-logo{
+    width: 90px;
+    /* -webkit-filter: drop-shadow(1px 1px 5px #111 ); */
+}
