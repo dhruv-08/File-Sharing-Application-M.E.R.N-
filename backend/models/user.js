@@ -7,6 +7,8 @@ var User = new Schema({
         type: Boolean,
         default: false,
     },
+    history:[],
+    sender:[],
 });
 
 User.plugin(passportLocalMongoose);

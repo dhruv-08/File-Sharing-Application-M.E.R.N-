@@ -1,6 +1,6 @@
 .Left{
     background-color: #f7f9fa;
-    height: 100vh;
+    /* height: 100vh; */
 }
 .logo{
     display: inline;
@@ -11,3 +11,30 @@
     width: 90px;
     /* -webkit-filter: drop-shadow(1px 1px 5px #111 ); */
 }
+.row_row {
+    display: flex;
+    /* flex-direction: row; */
+    justify-items: center;
+    text-align: center;
+    position: absolute;
+  }
+  .row_row::-webkit-scrollbar {
+    display: none;
+  }
+  .text{
+      position: relative;
+      top:30%
+  }
+  .row_item {
+    background-color: #f1f1f1;
+    width:235px;
+    height: 200px;
+    object-fit: contain;
+    /* text-align: center; */
+    /* padding-right: 1%; */
+    padding-bottom: 2%;
+    margin-right: 10px;
+  }
+  .text{
+      padding-top: 50%;
+  }

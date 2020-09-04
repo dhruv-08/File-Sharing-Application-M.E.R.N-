@@ -33,7 +33,7 @@ const upload=multer({storage:storage});
 router.post('/upload',upload.single('myfile'),function(req,res,next){
   console.log(req.file);
   x=req.file;
-  res.status(204).send();
+  res.send(x);
 });
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -72,23 +72,6 @@ router.post('/login', (req, res) => {
         passport.authenticate('local')(req, res, () => {
           res.statusCode = 200;
           res.setHeader('Content-Type', 'application/json');
-          if(user.sub!=='empty'){
-            async function fun(){
-              const subscription =await stripe.subscriptions.retrieve(
-                user.sub
-              );
-              if(subscription.plan.active===true){
-                res.json({success: true, status:'true'});
-              }
-              else{
-                res.json({success: true, status:'false'});
-              }
-            }
-          fun();
-          }
-          else{
-            res.json({success: true, status:'false'});
-          }
         });
       }
       else{
@@ -98,6 +81,22 @@ router.post('/login', (req, res) => {
       }
   })
 });
+router.post('/send',function(req,res,next){       
+    User.findOne({username:req.body.from})
+    .then((user)=>{
+      User.update({username:req.body.from},{
+          $push: {"history": req.body.x,"sender": req.body.x},
+      }, function(err, affected, resp) {
+        console.log(resp);
+     });
+     res.status(204).send();
+    })
+    .catch((err)=>{
+     var err=new Error('Error not sent!!!');
+     err.status=403;
+     next(err);
+    });
+ });
 router.post('/updatePassword',(req,res,next)=>{
     User.findOne({username:req.session.passport.user})
     .then((user)=>{
