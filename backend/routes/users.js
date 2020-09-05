@@ -9,6 +9,7 @@ const { authenticate } = require('passport');
 /* GET users listing. */
 router.use(bodyParser.json());
 var mongoose=require('mongoose');
+const { ObjectID, ObjectId } = require('mongodb');
 require('dotenv').config();
 url="mongodb://localhost:27017/FileUpload";
 mongoose.connect(url);
@@ -29,10 +30,25 @@ var storage=GridStorage({
       });
   }
 });
-// var sendhis=[],val;
-// router.get("/data",(req,res,next)=>{
-//   console.log(sendhis);
-// })
+router.post("/remove",(req,res,next)=>{
+  collectionChunks.remove({files_id:ObjectId(`${req.body.ide}`)});
+  collection.remove({_id:ObjectId(`${req.body.ide}`)})
+  User.findOne({username:"dhruv"})
+    .then((user)=>{
+      User.update({username:"dhruv"},{
+          history:req.body.a,
+          sender:req.body.b,
+      }, function(err, affected, resp) {
+        console.log(resp);
+     });
+     res.status(204).send();
+    })
+    .catch((err)=>{
+     var err=new Error('Error not sent!!!');
+     err.status=403;
+     next(err);
+    });
+})
 router.get("/list",(req,res,next)=>{
   var sendhis=[];
   User.findOne({username:"dhruv"})

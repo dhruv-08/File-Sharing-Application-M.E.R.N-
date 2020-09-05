@@ -37,7 +37,7 @@ function Home() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [data, setdata] = useState([])
     const [send, setsend] = useState([])
-    const [f, setf] = useState([])
+    const [f, setf] = useState([]);
   const handleShow = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -49,16 +49,28 @@ function Home() {
   const handleClick = () => {
     setOpen(!open);
   };
+  function handleRemove(idx,id){
+    var array=f;
+    var sendArray=send;
+      array.splice(idx,1);
+      sendArray.splice(idx,1);
+      console.log(sendArray);
+      console.log(array);
+      Axios.post("/remove",{a:array,ide:id,b:sendArray})
+      .then(res=>{
+          console.log(res);
+      }).catch(err=>{
+          console.log(err);
+      })
+  }
   useEffect(() => {
     async function fun(){
       await Axios.get("/list")
       .then(res=>{
           setdata(res.data.sendhis);
           
-          setsend(res.data.user.sender);
-          console.log(res.data.user.sender)
+          setsend(res.data.user.sender)
           setf(res.data.user.history);
-          console.log(res.data.user.history)
         console.log(res);
       }).catch(err=>{
         console.log(err);
@@ -157,7 +169,7 @@ function Home() {
                                         </TableCell>
                                         <TableCell align="right">{send[idx]}</TableCell>
                                         <TableCell align="right"><a href={data[idx]} style={{textDecoration:"none",color:"black"}} download><CloudDownloadIcon style={{fontSize:"40px"}}/></a></TableCell>
-                                        <TableCell align="right"><CloseIcon/></TableCell>
+                                        <TableCell align="right"><CloseIcon onClick={()=>handleRemove(idx,f[idx].id)}/></TableCell>
                                         </TableRow>
                                     ))}
                                     </TableBody>
