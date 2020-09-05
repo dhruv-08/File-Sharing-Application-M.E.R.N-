@@ -29,6 +29,115 @@ var storage=GridStorage({
       });
   }
 });
+// var sendhis=[],val;
+// router.get("/data",(req,res,next)=>{
+//   console.log(sendhis);
+// })
+router.get("/list",(req,res,next)=>{
+  var sendhis=[];
+  User.findOne({username:"dhruv"})
+  .then((user)=>{
+      
+      user.history.map(j=>
+        collection.find({filename:j.filename}).toArray(function(err,docs){
+          if(err){
+            res.end('err');
+          }
+          else{
+           collectionChunks.find({files_id:docs[0]._id}).toArray(function(err,chunk){
+              if(err){
+                res.end('err data');
+              }
+              else{
+                let fileData=[];
+                for(let i=0;i<chunk.length;i++){
+                  fileData.push(chunk[i].data.toString('base64'));
+                }
+                let finalFile=fileData.join('');
+                if(docs[0].contentType=='image/jpeg'){
+                  sendhis.push("data:image/jpeg;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='video/mp4'){
+                  sendhis.push("data:video/mp4;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='video/3gpp'){
+                  sendhis.push("data:video/3gpp;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='text/plain'){
+                  sendhis.push("data:text/plain;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='application/octet-stream'){
+                  sendhis.push("data:application/octet-stream;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='application/pdf'){
+                  sendhis.push("data:application/pdf;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='application/postscript'){
+                  sendhis.push("data:application/postscript;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='application/msword'){
+                  sendhis.push("data:application/msword;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='image/gif'){
+                  sendhis.push("data:image/gif;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='application/x-gzip'){
+                  sendhis.push("data:application/x-gzip;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='text/html'){
+                  sendhis.push("data:text/html;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='application/java-archive'){
+                  sendhis.push("data:application/java-archive;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='text/x-java-source'){
+                  sendhis.push("data:text/x-java-source;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='application/javascript'){
+                  sendhis.push("data:application/javascript;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='application/json'){
+                  sendhis.push("data:application/json;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='audio/x-mpegurl'){
+                  sendhis.push("data:audio/x-mpegurl;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='audio/mpeg'){
+                  sendhis.push("data:audio/mpeg;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='application/x-msdownload'){
+                  sendhis.push("data:application/x-msdownload;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='image/png'){
+                  sendhis.push("data:image/png;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='application/vnd.ms-powerpoint'){
+                  sendhis.push("data:application/vnd.ms-powerpoint;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='application/x-rar-compressed'){
+                  sendhis.push("data:application/x-rar-compressed;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='application/x-tar'){
+                  sendhis.push("data:application/x-tar;base64,"+finalFile+"");
+                }
+                else if(docs[0].contentType=='application/zip'){
+                  sendhis.push("data:application/zip;base64,"+finalFile+"");
+                }
+                else{
+                  res.end('Not Supported');
+                }
+              }
+            })
+          }
+        })
+        );
+      setTimeout(() => {
+        res.send(sendhis)
+      }, 200);
+      
+  })
+  
+})
 const upload=multer({storage:storage});
 router.post('/upload',upload.single('myfile'),function(req,res,next){
   console.log(req.file);
@@ -85,7 +194,7 @@ router.post('/send',function(req,res,next){
     User.findOne({username:req.body.from})
     .then((user)=>{
       User.update({username:req.body.from},{
-          $push: {"history": req.body.x,"sender": req.body.x},
+          $push: {"history": req.body.x,"sender": req.body.from},
       }, function(err, affected, resp) {
         console.log(resp);
      });
