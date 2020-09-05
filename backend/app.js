@@ -20,7 +20,7 @@ connect.then((db)=>{
   console.log("Connected Successfully");
 });
 const sessionMongo=new MongoStore({
-  uri:"mongodb://localhost:27017/hello",
+  uri:"mongodb://localhost:27017/FileUpload",
   collection:"session"
 })
 app.set('views', path.join(__dirname, 'views'));

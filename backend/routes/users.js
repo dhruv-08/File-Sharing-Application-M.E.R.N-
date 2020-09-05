@@ -243,6 +243,9 @@ router.post('/updatePassword',(req,res,next)=>{
       })
       .catch((err)=>next(err));
   });
+  router.get("/ses",(req,res,next)=>{
+    res.send(req.session.passport);
+  })
 router.get('/logout',(req,res,next)=>{
   req.session.destroy();
   res.clearCookie('session_id');

@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import Icon from '@material-ui/icons/Send';
 import "../App.css";
 import LockOpenIcon from '@material-ui/icons/LockOpen';
+import DoneIcon from '@material-ui/icons/Done';
+import CloseIcon from '@material-ui/icons/Close';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ReactCardFlip from 'react-card-flip';
 import { Button, Dialog,DialogContent, DialogContentText, DialogTitle, FormControl, Grid, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@material-ui/core';
@@ -94,41 +96,41 @@ function Login() {
     return (
         <div className="App" style={{overflow:"hidden"}}>
         {success===true && <Dialog
-        style={{textAlign:"center"}}
-               open={true}
-               aria-labelledby="alert-dialog-title"
-               aria-describedby="alert-dialog-description">
-               <DialogTitle id="alert-dialog-title"><h1>Sign-Up Successfully</h1></DialogTitle>
-               <DialogContent>
-               <DialogContentText id="alert-dialog-description">
-               <img src="https://thumbs.gfycat.com/QuaintLikelyFlyingfish-size_restricted.gif" alt="success" style={{width:"250px",height:"200px"}}/>
-               </DialogContentText>
-               </DialogContent>
-           </Dialog>}
-       {sign===true &&<Dialog
-               style={{textAlign:"center"}}
-               open={true}
-               aria-labelledby="alert-dialog-title"
-               aria-describedby="alert-dialog-description">
-               <DialogTitle id="alert-dialog-title"><h1>Already Registered</h1></DialogTitle>
-               <DialogContent>
-               <DialogContentText id="alert-dialog-description">
-               <img src="https://www.pngitem.com/pimgs/m/215-2158015_animated-cross-mark-gif-hd-png-download.png" alt="error" style={{width:"200px",height:"150px"}}/>
-               </DialogContentText>
-               </DialogContent>
-           </Dialog>}
-        {open===true &&<Dialog
-               open={true}
-               style={{textAlign:"center"}}
-               aria-labelledby="alert-dialog-title"
-               aria-describedby="alert-dialog-description">
-               <DialogTitle id="alert-dialog-title">Invalid username or password</DialogTitle>
-               <DialogContent>
-               <DialogContentText id="alert-dialog-description">
-               <img src="https://www.pngitem.com/pimgs/m/215-2158015_animated-cross-mark-gif-hd-png-download.png" alt="error" style={{width:"200px",height:"150px"}}/>
-               </DialogContentText>
-               </DialogContent>
-           </Dialog>}
+                    style={{color:"black"}}
+                    open={true}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description">
+                    <DialogTitle id="alert-dialog-title" style={{backgroundColor:"black"}}><span style={{color:"white"}}>Sign-up Successfully</span></DialogTitle>
+                    <DialogContent style={{backgroundColor:"black",textAlign:"center"}}>
+                    <DialogContentText id="alert-dialog-description">
+                    <DoneIcon style={{color:"white"}}/>
+                    </DialogContentText>
+                    </DialogContent>
+                </Dialog>}
+           {sign===true && <Dialog
+                    style={{color:"black"}}
+                    open={true}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description">
+                    <DialogTitle id="alert-dialog-title" style={{backgroundColor:"black"}}><span style={{color:"white"}}>Already Registered</span></DialogTitle>
+                    <DialogContent style={{backgroundColor:"black",textAlign:"center"}}>
+                    <DialogContentText id="alert-dialog-description">
+                    <CloseIcon style={{color:"white"}}/>
+                    </DialogContentText>
+                    </DialogContent>
+                </Dialog>}
+           {open===true && <Dialog
+                    style={{color:"black"}}
+                    open={true}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description">
+                    <DialogTitle id="alert-dialog-title" style={{backgroundColor:"black"}}><span style={{color:"white"}}>Invalid username or password</span></DialogTitle>
+                    <DialogContent style={{backgroundColor:"black",textAlign:"center"}}>
+                    <DialogContentText id="alert-dialog-description">
+                    <CloseIcon style={{color:"white"}}/>
+                    </DialogContentText>
+                    </DialogContent>
+                </Dialog>}
            {/* style={{backgroundImage:`url(${process.env.PUBLIC_URL + `/back.jpg`})`,height:"102.5vh",boxShadow:" inset 700px 0px 200px -8px #111"}} */}
                <header className="banner" style={{backgroundColor:"brown",overflow:"hidden",height:"100vh",backgroundPosition:"center",backgroundSize:"1300px 700px",backgroundRepeat:"no-repeat"}}>
                <Grid container spacing={1} >

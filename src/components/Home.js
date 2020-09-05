@@ -1,8 +1,9 @@
-import { Button, Collapse, Grid, List, ListItem, ListItemIcon, ListItemText, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
+import { Button, Collapse, Dialog, DialogContent, DialogContentText, DialogTitle, Grid, List, ListItem, ListItemIcon, ListItemText, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import "../CSS/Home.css"
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import SendIcon from '@material-ui/icons/Send';
+import DoneIcon from '@material-ui/icons/Done';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
@@ -14,7 +15,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import FlipMove from 'react-flip-move';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import Axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
     button: {
       margin: theme.spacing(1),
@@ -42,6 +43,7 @@ function Home() {
     const [userdata, setuserdata] = useState('')
     const [f, setf] = useState([]);
     const [fil, setfil] = useState([]);
+    const [success, setsuccess] = useState(false);
     const [recent, setrecent] = useState([])
     const [check, setcheck] = useState(false);
     const [search, setsearch] = useState('');
@@ -49,7 +51,15 @@ function Home() {
     const [tot, settot] = useState([])
     const [ar, setar] = useState([])
     const [ar1, setar1] = useState([])
-
+    const history = useHistory()
+    function handleLogout(){
+        Axios.get("/logout")
+              .then(res=>{
+                  history.replace("/",null);
+              }).catch(err=>{
+                console.log("Done");
+            })
+      }
   const handleShow = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -98,6 +108,10 @@ function Home() {
       }).catch(err=>{
           console.log("Done!!");
       })
+      setsuccess(true);
+            setTimeout(() => {
+                setsuccess(false);
+            }, 2000);
       setcheck(!check);
   }
   useEffect(() => {
@@ -155,7 +169,7 @@ function Home() {
                         <List component="div" disablePadding>
                             <FlipMove>
                             {recent.map((m,idx)=>
-                                <a style={{textDecoration:"none",color:"black"}} href={data[idx]} download><ListItem button className={classes.nested}>
+                                <a style={{textDecoration:"none",color:"black"}} key={idx} href={data[idx]} download><ListItem button className={classes.nested}>
                                     <ListItemIcon>
                                     <InsertDriveFileIcon style={{color:"grey"}} />
                                     </ListItemIcon>
@@ -184,7 +198,7 @@ function Home() {
                                     open={Boolean(anchorEl)}
                                     onClose={handleClose}
                                 >
-                                    <Link to="/" style={{textDecoration:"none",color:"black"}}><MenuItem onClick={handleClose}>Logout</MenuItem></Link>
+                                    <Link to="/" style={{textDecoration:"none",color:"black"}} onClick={()=>handleLogout()}><MenuItem onClick={handleClose}>Logout</MenuItem></Link>
                                 </Menu>
                                 </Grid>
                             </Grid><br/>
@@ -201,8 +215,7 @@ function Home() {
                                         <TableCell  style={{fontWeight:"bold"}} align="right">Remove</TableCell>
                                     </TableRow>
                                     </TableHead>
-                                    <TableBody className="tablebody">
-                                    <FlipMove>
+                                    <TableBody >
                                     {f.map((row,idx) => (
                                         <TableRow key={idx}>
                                         <TableCell component="th" scope="row">
@@ -214,7 +227,6 @@ function Home() {
                                         <TableCell align="right"><CloseIcon onClick={()=>handleRemove(idx,f[idx].id)}/></TableCell>
                                         </TableRow>
                                     ))}
-                                    </FlipMove>
                                     </TableBody>
                                 </Table>
                             </TableContainer>}
@@ -224,6 +236,18 @@ function Home() {
                     </Grid>
                 </Grid>
             </div>
+            {success===true && <Dialog
+                    style={{color:"black"}}
+                    open={true}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description">
+                    <DialogTitle id="alert-dialog-title" style={{backgroundColor:"black"}}><span style={{color:"white"}}>Removed Successfully</span></DialogTitle>
+                    <DialogContent style={{backgroundColor:"black",textAlign:"center"}}>
+                    <DialogContentText id="alert-dialog-description">
+                    <DoneIcon style={{color:"white"}}/>
+                    </DialogContentText>
+                    </DialogContent>
+                </Dialog>}
         </div>
     )
 }
