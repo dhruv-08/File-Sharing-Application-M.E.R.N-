@@ -8,19 +8,19 @@ function FileUpload() {
   const [file, setfile] = useState(null)
   const [user, setuser] = useState('');
   const [data, setdata] = useState(null);
-  useEffect(() => {
-    async function fun(){
-      await Axios.get("/list")
-      .then(res=>{
-        console.log("hello")
-        console.log(res);
-      }).catch(err=>{
-        console.log(err);
-      })
-    }
-    console.log("hel")
-    fun();
-  }, [])
+  // useEffect(() => {
+  //   async function fun(){
+  //     await Axios.get("/list")
+  //     .then(res=>{
+  //       console.log("hello")
+  //       console.log(res);
+  //     }).catch(err=>{
+  //       console.log(err);
+  //     })
+  //   }
+  //   console.log("hel")
+  //   fun();
+  // }, [])
   const onSubmit = async () => {
     const formData = new FormData()
     formData.append("myfile",file )

@@ -1,5 +1,5 @@
 import { Button, Collapse, Grid, List, ListItem, ListItemIcon, ListItemText, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import "../CSS/Home.css"
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import SendIcon from '@material-ui/icons/Send';
@@ -12,6 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import CloseIcon from '@material-ui/icons/Close';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import Axios from 'axios';
 const useStyles = makeStyles((theme) => ({
     button: {
       margin: theme.spacing(1),
@@ -34,7 +35,9 @@ function Home() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const [anchorEl, setAnchorEl] = React.useState(null);
-
+    const [data, setdata] = useState([])
+    const [send, setsend] = useState([])
+    const [f, setf] = useState([])
   const handleShow = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -46,17 +49,23 @@ function Home() {
   const handleClick = () => {
     setOpen(!open);
   };
-  function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-  }
-  
-  const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-  ];
+  useEffect(() => {
+    async function fun(){
+      await Axios.get("/list")
+      .then(res=>{
+          setdata(res.data.sendhis);
+          
+          setsend(res.data.user.sender);
+          console.log(res.data.user.sender)
+          setf(res.data.user.history);
+          console.log(res.data.user.history)
+        console.log(res);
+      }).catch(err=>{
+        console.log(err);
+      })
+    }
+    fun();
+  }, [])
     return (
         <div>
             <div>
@@ -141,13 +150,13 @@ function Home() {
                                     </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                    {rows.map((row) => (
-                                        <TableRow key={row.name}>
+                                    {f.map((row,idx) => (
+                                        <TableRow key={idx}>
                                         <TableCell component="th" scope="row">
-                                            {row.name}
+                                            {f[idx].filename}
                                         </TableCell>
-                                        <TableCell align="right">{row.calories}</TableCell>
-                                        <TableCell align="right"><CloudDownloadIcon style={{fontSize:"40px"}}/></TableCell>
+                                        <TableCell align="right">{send[idx]}</TableCell>
+                                        <TableCell align="right"><a href={data[idx]} style={{textDecoration:"none",color:"black"}} download><CloudDownloadIcon style={{fontSize:"40px"}}/></a></TableCell>
                                         <TableCell align="right"><CloseIcon/></TableCell>
                                         </TableRow>
                                     ))}

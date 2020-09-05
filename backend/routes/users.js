@@ -37,7 +37,7 @@ router.get("/list",(req,res,next)=>{
   var sendhis=[];
   User.findOne({username:"dhruv"})
   .then((user)=>{
-      
+      // send=user.sender;
       user.history.map(j=>
         collection.find({filename:j.filename}).toArray(function(err,docs){
           if(err){
@@ -132,8 +132,8 @@ router.get("/list",(req,res,next)=>{
         })
         );
       setTimeout(() => {
-        res.send(sendhis)
-      }, 200);
+        res.send({sendhis,user})
+      }, 500);
       
   })
   
