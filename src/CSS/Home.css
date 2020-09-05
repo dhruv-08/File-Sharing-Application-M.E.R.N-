@@ -1,6 +1,11 @@
 .Left{
     background-color: #f7f9fa;
     /* height: 100vh; */
+    min-height: 100vh;
+    height:"100%"
+}
+.tablebody>div{
+    display:contents;
 }
 .logo{
     display: inline;

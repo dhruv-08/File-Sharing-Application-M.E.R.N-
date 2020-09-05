@@ -147,8 +147,14 @@ router.get("/list",(req,res,next)=>{
           }
         })
         );
+        array=[
+          {
+            sendhistory:sendhis,
+            sendername:user
+          }
+        ]
       setTimeout(() => {
-        res.send({sendhis,user})
+        res.send(array)
       }, 500);
       
   })
