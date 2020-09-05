@@ -27,5 +27,11 @@
 .sign,.log{
   /* font-size: xx-large; */
   /* animation: slide-down 2s ease-in; */
-  font-family: 'Pacifico', cursive;
+  
+  /* font-family: 'Pacifico', cursive; */
+}
+.dark{
+  -webkit-text-fill-color: white; /* Will override color (regardless of order) */
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black
 }

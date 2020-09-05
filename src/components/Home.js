@@ -49,6 +49,7 @@ function Home() {
     const [tot, settot] = useState([])
     const [ar, setar] = useState([])
     const [ar1, setar1] = useState([])
+
   const handleShow = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -133,11 +134,11 @@ function Home() {
                             <img className="img-logo" src={process.env.PUBLIC_URL + '/logo.png'}/>
                             </Grid>
                             <Grid item xs={8} style={{paddingTop:"13%"}}>
-                            <span style={{paddingLeft:"15%"}}>Hey! {userdata}</span>
+                            <span style={{paddingLeft:"15%",fontSize:"17px"}}>Hey! {userdata}</span>
                             </Grid>
                         </Grid>
                     </div><br/>
-                    <Button variant="contained" style={{backgroundColor:"#4782ff",color:"white"}} className={classes.button}><span style={{fontSize:"17px"}}>Send</span>&nbsp;&nbsp;&nbsp;<SendIcon/></Button>
+                    <Link to="/file" style={{textDecoration:"none"}}><Button variant="contained" style={{backgroundColor:"#4782ff",color:"white"}} className={classes.button}><span style={{fontSize:"17px"}}>Send</span>&nbsp;&nbsp;&nbsp;<SendIcon/></Button></Link>
                     <br/>
                     <div style={{}}>
                     <h1 style={{fontWeight:"normal",fontSize:"25px",paddingLeft:"12%"}}>Recent</h1>
@@ -187,22 +188,15 @@ function Home() {
                                 </Menu>
                                 </Grid>
                             </Grid><br/>
-                        {/* <h1 style={{fontWeight:"normal",fontSize:"25px"}}>Quick Access</h1>
-                            <div className="row_row">
-                                <div className="row_item"><span className="text"><InsertDriveFileIcon style={{color:"grey",fontSize:"60px"}} /></span></div>
-                                <div className="row_item"><span className="text"><InsertDriveFileIcon style={{color:"grey",fontSize:"60px"}} /></span></div>
-                                <div className="row_item"><span className="text"><InsertDriveFileIcon style={{color:"grey",fontSize:"60px"}} /></span></div>  
-                                <div className="row_item"><span className="text"><InsertDriveFileIcon style={{color:"grey",fontSize:"60px"}} /></span></div>
-                                <div className="row_item"><span className="text"><InsertDriveFileIcon style={{color:"grey",fontSize:"60px"}} /></span></div>
-                            </div> */}
                             <div >
                             <h1 style={{fontWeight:"normal",fontSize:"25px"}}>Files</h1>
-                            <TableContainer component={Paper}>
+                            {f.length!==0 && <TableContainer component={Paper}>
                                 <Table className={classes.table} aria-label="simple table">
                                     <TableHead>
                                     <TableRow>
                                         <TableCell  style={{fontWeight:"bold"}}>Name</TableCell>
                                         <TableCell  style={{fontWeight:"bold"}} align="right">Sender</TableCell>
+                                        <TableCell  style={{fontWeight:"bold"}} align="right">Upload Date</TableCell>
                                         <TableCell  style={{fontWeight:"bold"}} align="right">Download</TableCell>
                                         <TableCell  style={{fontWeight:"bold"}} align="right">Remove</TableCell>
                                     </TableRow>
@@ -212,9 +206,10 @@ function Home() {
                                     {f.map((row,idx) => (
                                         <TableRow key={idx}>
                                         <TableCell component="th" scope="row">
-                                            {f[idx].filename}
+                                        <InsertDriveFileIcon style={{color:"grey",fontSize:"15px"}} />&nbsp;&nbsp;<span style={{fontSize:"15px"}}>{f[idx].filename}</span>
                                         </TableCell>
                                         <TableCell align="right">{send[idx]}</TableCell>
+                                        <TableCell align="right">{f[idx].uploadDate}</TableCell>
                                         <TableCell align="right"><a href={data[idx]} style={{textDecoration:"none",color:"black"}} download><CloudDownloadIcon style={{fontSize:"40px"}}/></a></TableCell>
                                         <TableCell align="right"><CloseIcon onClick={()=>handleRemove(idx,f[idx].id)}/></TableCell>
                                         </TableRow>
@@ -222,7 +217,8 @@ function Home() {
                                     </FlipMove>
                                     </TableBody>
                                 </Table>
-                            </TableContainer>
+                            </TableContainer>}
+                            {f.length===0 && <h1>Empty</h1>}
                             </div>
                         </div>
                     </Grid>

@@ -33,9 +33,9 @@ var storage=GridStorage({
 router.post("/remove",(req,res,next)=>{
   collectionChunks.remove({files_id:ObjectId(`${req.body.ide}`)});
   collection.remove({_id:ObjectId(`${req.body.ide}`)})
-  User.findOne({username:"dhruv"})
+  User.findOne({username:req.session.passport.user})
     .then((user)=>{
-      User.update({username:"dhruv"},{
+      User.update({username:req.session.passport.user},{
           history:req.body.a,
           sender:req.body.b,
       }, function(err, affected, resp) {
@@ -51,7 +51,7 @@ router.post("/remove",(req,res,next)=>{
 })
 router.get("/list",(req,res,next)=>{
   var sendhis=[];
-  User.findOne({username:"dhruv"})
+  User.findOne({username:req.session.passport.user})
   .then((user)=>{
       // send=user.sender;
       user.history.map(j=>
@@ -170,7 +170,7 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 router.post('/signup', (req, res, next) => {
-  const user=new User({username: req.body.username,email:req.body.email})
+  const user=new User({username: req.body.username})
   User.register(user, 
     req.body.password, (err, user) => {
       console.log("hehe");
@@ -197,12 +197,14 @@ router.get("/profile",(req,res,next)=>{
   })
 })
 router.post('/login', (req, res) => {
+  console.log("hello");
   User.findOne({username:req.body.username})
   .then((user)=>{
       if(user){
         passport.authenticate('local')(req, res, () => {
           res.statusCode = 200;
           res.setHeader('Content-Type', 'application/json');
+          res.json({success:true});
         });
       }
       else{
@@ -216,7 +218,7 @@ router.post('/send',function(req,res,next){
     User.findOne({username:req.body.from})
     .then((user)=>{
       User.update({username:req.body.from},{
-          $push: {"history": req.body.x,"sender": req.body.from},
+          $push: {"history": req.body.x,"sender": req.session.passport.user},
       }, function(err, affected, resp) {
         console.log(resp);
      });
